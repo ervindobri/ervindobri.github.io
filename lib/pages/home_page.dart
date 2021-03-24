@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mouse_parallax/mouse_parallax.dart';
 import 'package:portfol_io/constants/globals.dart';
 import 'package:portfol_io/constants/theme_utils.dart';
 import 'package:portfol_io/custom_widgets/fade_in_slide.dart';
@@ -35,11 +36,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
   late List<AnimationController> _buttonAnimationControllers;
 
   int _animDelay = 150;
-
   var random = new Random();
-  //TODO: animations
-  // late List<AnimationController> _buttonAnimations;
+  num _titleAnimOffset = Get.height - 100;
 
+  int _selectedIndex = 0;
 
 
   void initAnimations(){
@@ -88,14 +88,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
             onNotification: (notification) {
               if (notification.depth == 0) {
                 if (notification is ScrollUpdateNotification) {
-                  if ( notification.metrics.pixels < Get.height){
+                  if ( notification.metrics.pixels < _titleAnimOffset){
                       _topController.forward();
                       _playButtonAnims();
                   }
                   else{
                     _topController.reverse();
                     _reverseButtonAnims();
-
                   }
                 } else {
 
@@ -128,7 +127,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                 filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
                 child: Container(
                   height: Get.height*.15,
-                  color: ThemeUtils.darkGrey.withOpacity(.3),
+                  color: ThemeUtils.darkGrey.withOpacity(.0),
                   child: topMenu(),
                 ),
               ),
@@ -146,171 +145,175 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
       decoration: BoxDecoration(
           gradient: ThemeUtils.greyGradient
       ),
-      child: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(50.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 100.0),
-                      child: FadeTransition(
-                        opacity: Tween<double>(
-                          begin: 0,
-                          end: 1,
-                        ).animate(_titleAnimation),
-                        child: SlideTransition(
-                          position: Tween<Offset>(
-                            begin: Offset(0, 0.1),
-                            end: Offset.zero,
-                          ).animate(_titleAnimation),
-                        child: Text(
-                          Globals.homeTitle,
-                          style: GoogleFonts.oswald(
-                            color: ThemeUtils.white,
-                            fontSize: Get.width/15,
-                            shadows: [BoxShadow(
-                              color: ThemeUtils.darkGrey,
-                              blurRadius: 10,
-                              spreadRadius: -2
-                            )]
-                          ),
-                        ),
-                      ),
-                      ),
-                  ),
-                  FadeTransition(
-                  opacity: Tween<double>(
-                    begin: 0,
-                    end: 1,
-                  ).animate(_titleAnimation),
-                  child: SlideTransition(
-                    position: Tween<Offset>(
-                      begin: Offset(0, 0.1),
-                      end: Offset.zero,
-                    ).animate(_titleAnimation),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 50.0, horizontal: 200),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: Get.width*.15,
-                            child: ElevatedButton(
-                              style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(ThemeUtils.primaryColor),
-                                  shadowColor: MaterialStateProperty.all(ThemeUtils.primaryColor),
-                                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15))
-                                  )
-                              ),
-                              onPressed: () { _scrollController.animateTo(Get.height, duration: Duration(milliseconds: 300), curve: Curves.easeInOut); },
-                              child: Padding(
-                                padding: const EdgeInsets.all(25.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text(
-                                      Globals.checkMeOut,
-                                      style: GoogleFonts.oswald(
-                                        color: ThemeUtils.white,
-                                        fontSize: 30,
-                                      ),
-                                    ),
-                                    FaIcon(
-                                      FontAwesomeIcons.arrowDown,
-                                      color: ThemeUtils.white,
-                                    )
-                                  ],
-                                ),
+      child:Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(50.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 100.0),
+                          child: FadeTransition(
+                            opacity: Tween<double>(
+                              begin: 0,
+                              end: 1,
+                            ).animate(_titleAnimation),
+                            child: SlideTransition(
+                              position: Tween<Offset>(
+                                begin: Offset(0, 0.1),
+                                end: Offset.zero,
+                              ).animate(_titleAnimation),
+                            child: Text(
+                              Globals.homeTitle,
+                              style: GoogleFonts.oswald(
+                                color: ThemeUtils.white,
+                                fontSize: Get.width/15,
+                                shadows: [BoxShadow(
+                                  color: ThemeUtils.darkGrey,
+                                  blurRadius: 10,
+                                  spreadRadius: -2
+                                )]
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: AnimationLimiter(
-                              child: Row(
-                                children: List.generate(Globals.socialMediaBubbles.values.length, (index)
-                                => AnimationConfiguration.staggeredList(
-                                  position: index,
-                                  child: SlideAnimation(
-                                    verticalOffset: 50,
-                                    delay: Duration(milliseconds: index*100),
-                                    child: FadeInAnimation(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(15.0),
-                                        child: SocialMediaBubble(
-                                            icon: Globals.socialMediaBubbles.values.toList()[index].first,
-                                            href: Globals.socialMediaBubbles.values.toList()[index].last
+                          ),
+                      ),
+                      FadingSlideWidget(
+                      animation: _titleAnimation,
+                      offset: Offset(0, 0.1),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 50.0, horizontal: 200),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                width: Get.width*.15,
+                                child: ElevatedButton(
+                                  style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all(ThemeUtils.primaryColor),
+                                      shadowColor: MaterialStateProperty.all(ThemeUtils.primaryColor),
+                                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(15))
+                                      )
+                                  ),
+                                  onPressed: () {
+                                    _scrollController.animateTo(Get.height, duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+                                    setState(()=> _selectedIndex=1);
+                                    },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(25.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Text(
+                                          Globals.checkMeOut,
+                                          style: GoogleFonts.oswald(
+                                            color: ThemeUtils.white,
+                                            fontSize: 30,
+                                          ),
                                         ),
-                                      ),
+                                        FaIcon(
+                                          FontAwesomeIcons.arrowDown,
+                                          color: ThemeUtils.white,
+                                        )
+                                      ],
                                     ),
                                   ),
-                                )
                                 ),
                               ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  )
-                ),
-              ],
-            ),
-          ),
-          Positioned(
-            bottom: 100,
-            right: 100,
-            child: Container(
-              height: Get.height/2.2,
-              width: Get.width*.4,
-              // color: Colors.black,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  greyButton(1, "Logo design", (){ print("hi"); }),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      greyButton(0, "UX/UI design", () { }),
-                      Container(
-                        height: 120,
-                        width: 120,
-                        decoration: BoxDecoration(
-                            color: ThemeUtils.primaryColor,
-                            shape: BoxShape.circle
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            height: 100,
-                            width: 100,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage("assets/pic.jpeg"),
-                                fit: BoxFit.cover
-                              ),
-                              shape: BoxShape.circle
-                            )
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: AnimationLimiter(
+                                  child: Row(
+                                    children: List.generate(Globals.socialMediaBubbles.values.length, (index)
+                                    => AnimationConfiguration.staggeredList(
+                                      position: index,
+                                      child: SlideAnimation(
+                                        verticalOffset: 50,
+                                        delay: Duration(milliseconds: index*100),
+                                        child: FadeInAnimation(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(15.0),
+                                            child: SocialMediaBubble(
+                                                icon: Globals.socialMediaBubbles.values.toList()[index].first,
+                                                href: Globals.socialMediaBubbles.values.toList()[index].last
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
                           ),
+                      )
+                    ),
+                  ],
+                ),
+              ),
+              Positioned(
+                bottom: 100,
+                right: 100,
+                child: Container(
+                  height: Get.height/2.2,
+                  width: Get.width*.4,
+                  // color: Colors.black,
+                  child: ParallaxStack(
+                    layers: [
+                      ParallaxLayer(
+                          yRotation: 0.35,
+                          xOffset: 10,
+                          xRotation: .3,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            greyButton(1, "Logo design", (){ print("hi"); }),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                greyButton(0, "UX/UI design", () { }),
+                                Container(
+                                  height: 120,
+                                  width: 120,
+                                  decoration: BoxDecoration(
+                                      color: ThemeUtils.primaryColor,
+                                      shape: BoxShape.circle
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Container(
+                                        height: 100,
+                                        width: 100,
+                                        decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                                image: AssetImage("assets/pic.jpeg"),
+                                                fit: BoxFit.cover
+                                            ),
+                                            shape: BoxShape.circle
+                                        )
+                                    ),
+                                  ),
+                                ),
+                                greyButton(3, "Desktop s", () { }),
+                              ],
+                            ),
+                            greyButton(2, "Mobile Apps", () { }),
+
+                          ],
                         ),
-                      ),
-                      greyButton(3, "Desktop Apps", () { }),
+                      )
                     ],
                   ),
-                  greyButton(2, "Mobile Apps", () { }),
-
-                ],
-              ),
-            ),
+                ),
+              )
+            ],
           )
-        ],
-      ),
     );
   }
 
@@ -342,15 +345,34 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                         padding: const EdgeInsets.symmetric(horizontal: 25.0),
                         child: InkWell(
                           onTap: (){
-                              print(Globals.menu[index]);
+                              _scrollController.animateTo(Globals.menuOffsets[index],
+                                  duration: Duration(milliseconds: 300),
+                                  curve: Curves.easeInOutCubic);
+                              setState(() {
+                                _selectedIndex = index;
+                              });
                           },
-                          child: Text(
-                            Globals.menu[index],
-                            style: GoogleFonts.oswald(
-                              color: ThemeUtils.primaryColor,
-                              fontWeight: FontWeight.w100,
-                              fontSize: 25,
-                            ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                Globals.menu[index],
+                                style: GoogleFonts.oswald(
+                                  color: ThemeUtils.primaryColor,
+                                  fontWeight: FontWeight.w100,
+                                  fontSize: 25,
+                                ),
+                              ),
+                              if ( _selectedIndex == index)
+                                Container(
+                                  width: 5,
+                                  height: 5,
+                                  decoration: BoxDecoration(
+                                    color: ThemeUtils.primaryColor,
+                                    shape: BoxShape.circle
+                                  ),
+                                )
+                            ],
                           ),
                         ),
                       )

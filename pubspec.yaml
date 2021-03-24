@@ -39,6 +39,7 @@ dependencies:
   flutter_staggered_animations: ^1.0.0
   flutter_point_tab_bar: ^0.2.0
   quiver: ^3.0.0
+  mouse_parallax: ^1.1.0
 
 dev_dependencies:
   flutter_test:
