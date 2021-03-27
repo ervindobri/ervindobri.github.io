@@ -29,6 +29,7 @@
 .packages
 .pub-cache/
 .pub/
+main.dart.js.map
 
 # Web related
 lib/generated_plugin_registrant.dart
