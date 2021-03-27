@@ -9,7 +9,7 @@ class FadingSlideWidget extends StatelessWidget {
       {Key? key,
       required this.animation,
       required this.child,
-      required this.offset})
+      this.offset = Offset.zero})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
