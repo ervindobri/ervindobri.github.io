@@ -1,6 +1,6 @@
 {
-    "name": "show_time",
-    "short_name": "show_time",
+    "name": "showtime_flutter",
+    "short_name": "showtime_flutter",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
