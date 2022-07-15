@@ -11,7 +11,7 @@
     For more details:
     * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
   -->
-  <base href="/portfolio/">
+  <base href="/">
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
@@ -27,11 +27,29 @@
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
+  <div id="loading"></div>
   <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
+       <script>
+        window.addEventListener('load', function(ev) {
+          var loading = document.querySelector('#loading');
+          loading.textContent = "Loading entrypoint...";
+          _flutter.loader.loadEntrypoint({
+            serviceWorker: {
+              serviceWorkerVersion: serviceWorkerVersion,
+            }
+          }).then(function(engineInitializer) {
+            loading.textContent = "Initializing engine...";
+            return engineInitializer.initializeEngine();
+          }).then(function(appRunner) {
+            loading.textContent = "Running app...";
+            return appRunner.runApp();
+          });
+        });
+     </script>
   <script>
-    var serviceWorkerVersion = '3895308122';
+    var serviceWorkerVersion = null;
     var scriptLoaded = false;
     function loadMainDartJs() {
       if (scriptLoaded) {
