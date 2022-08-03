@@ -1,8 +1,7 @@
 # portfol_io
 
-Showcase of my flutter projects
+<!-- Showcase of my flutter projects -->
+<!-- ## Personal projects: -->
+<!-- [showTIME](https://ervindobri.github.io/showtime/) -->
 
-## Personal projects:
-[showTIME](https://ervindobri.github.io/showtime/)
-
-[Portfolio](https://ervindobri.github.io/portfolio/)
+[Portfolio](https://ervindobri.github.io/)
