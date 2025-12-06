@@ -37880,7 +37880,7 @@ $S:2}
 A.aVa.prototype={
 $1(a){var s=A.eu().b
 s=s==null?null:s.canvasKitBaseUrl
-return(s==null?"https://www.gstatic.com/flutter-canvaskit/13e658725ddaa270601426d1485636157e38c34c/":s)+a},
+return(s==null?"https://www.gstatic.com/flutter-canvaskit/a5cb96369ef86c7e85abf5d662a1ca5d89775053/":s)+a},
 $S:58}
 A.a0y.prototype={
 gB(a){var s=this.a
@@ -103294,7 +103294,7 @@ s=A.ase(h)
 g=h.ok.w
 if(g==null)g=m
 else g=g.c0(h.ax.a===B.n?B.x:B.h)
-g=A.br("Let's work togerther",m,m,m,m,g,m,m)
+g=A.br("Let's work together",m,m,m,m,g,m,m)
 g=A.jN(A.uT(new A.c_(B.ea,A.dd(A.b([g,A.m5("assets/icons/coffee.svg",new A.i7(h.ax.a===B.n?B.x:B.h,B.bz,m,B.c0),32,32)],q),B.p,B.u,B.a9,24),m),new A.aNQ(),s),B.ch,B.bB,B.bf,B.ah)
 s=A.br("Scroll down",m,m,m,m,A.ij(k),m,m)
 h=A.C7(A.cB(m,A.cI(A.b([B.nu,r,g,B.nu,A.jN(A.fP(!1,m,!0,new A.c_(B.fn,A.dd(A.b([s,A.tL(B.Na,m,m,A.a5(k).ax.a===B.n?B.h:B.x,m,m,m,m,m,m,m,20,m,m)],q),B.p,B.u,B.a9,8),m),m,!0,m,m,m,m,m,m,m,m,new A.aNR(n.a),m,m,B.f2,m),B.LK,B.af,B.mI,B.dc)],q),B.aD,B.bO,B.D,24),B.m,m,m,m,m,m,B.M7,m,m,m,m),1)
